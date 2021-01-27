@@ -7,16 +7,18 @@ import styles from './question.module.scss';
 const Question = () => {
   const [question, setQuestion] = useState<string>();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      setIsLoading(true);
       const LIMIT = 100;
-      const response = await axios.get(
-        config.API_URL + `questions?limit=${LIMIT}`,
-        {
-          headers: { Authorization: config.API_KEY },
-        }
-      );
+      const response = await axios.get<{
+        total: number;
+        questions: IQuestion[];
+      }>(config.API_URL + `questions?limit=${LIMIT}`, {
+        headers: { Authorization: config.API_KEY },
+      });
 
       setQuestions(response.data.questions);
     };
@@ -27,6 +29,7 @@ const Question = () => {
   useEffect(() => {
     if (!question && questions.length) {
       newQuestion();
+      setIsLoading(false);
     }
   }, [questions]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -48,15 +51,33 @@ const Question = () => {
 
   return (
     <div className={styles.container} onClick={newQuestion}>
-      {question ? (
+      {isLoading ? (
+        <div>Laddar...</div>
+      ) : question ? (
         <>
           <h1>Jag har aldrig</h1>
           <h2>{question}</h2>
-          <p>Klicka varsomhelst för att gå vidare till nästa fråga.</p>
+          <p className={styles.subtext}>
+            Klicka varsomhelst för att gå vidare till nästa fråga.
+          </p>
         </>
       ) : (
         <div>Frågorna är slut, ladda om för att hämta nya, slumpade</div>
       )}
+
+      <div className={styles.credits}>
+        <h3>Text och Musik:</h3>
+        <p>Elin Lundqvist</p>
+        <p>
+          <a
+            href="https://twitter.com/alaxendrawallin"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Alexandra Wallin
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

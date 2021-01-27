@@ -3,7 +3,7 @@ import Login from '../components/Login';
 import Question from '../components/Question';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   return (
     <div className="app">
       {isAuthenticated ? <Question /> : <Login setAuth={setIsAuthenticated} />}
