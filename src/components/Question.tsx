@@ -6,10 +6,6 @@ const Question = () => {
   const [question, setQuestion] = useState('');
   const [questions, setQuestions] = useState<string[]>(q);
 
-  useEffect(() => {
-    newQuestion();
-  }, []);
-
   const newQuestion = () => {
     const idx = random(questions.length);
     setQuestion(questions[idx]);
@@ -19,6 +15,10 @@ const Question = () => {
 
     setQuestions(temp);
   };
+
+  useEffect(() => {
+    newQuestion();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const random = (max: number) => Math.floor(Math.random() * max);
 

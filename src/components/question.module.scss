@@ -10,6 +10,7 @@
   flex-direction: column;
   cursor: pointer;
   user-select: none;
+  padding: $padding;
 
   h2 {
     margin: $margin-double 0;
